@@ -9,7 +9,7 @@ project(aimrt LANGUAGES C CXX)
 # This setting allows predefined variables to take precedence for FetchContent_MakeAvailable()
 # See: https://cmake.org/cmake/help/latest/policy/CMP0077.html
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
-
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Set cmake path
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
@@ -21,12 +21,12 @@ option(AIMRT_BUILD_DOCUMENT "AimRT build document." OFF)
 option(AIMRT_BUILD_RUNTIME "AimRT build runtime." ON)
 option(AIMRT_BUILD_CLI_TOOLS "AimRT build aimrt command line tools." OFF)
 option(AIMRT_BUILD_WITH_PROTOBUF "AimRT build with protobuf." ON)
-option(AIMRT_BUILD_WITH_ROS2 "AimRT build with ros2." OFF)
+option(AIMRT_BUILD_WITH_ROS2 "AimRT build with ros2." ON)
 option(AIMRT_BUILD_PROTOCOLS "AimRT build protocols." ON)
 
 option(AIMRT_INSTALL "Enable installation of AimRT." ON)
 
-cmake_dependent_option(AIMRT_BUILD_EXAMPLES "AimRT build examples." OFF "AIMRT_BUILD_RUNTIME" OFF)
+cmake_dependent_option(AIMRT_BUILD_EXAMPLES "AimRT build examples." ON "AIMRT_BUILD_RUNTIME" ON)
 
 cmake_dependent_option(AIMRT_BUILD_PYTHON_RUNTIME "AimRT build python runtime." OFF "AIMRT_BUILD_RUNTIME" OFF)
 cmake_dependent_option(AIMRT_BUILD_PYTHON_PACKAGE "AimRT build python package." OFF "AIMRT_BUILD_PYTHON_RUNTIME;AIMRT_INSTALL" OFF)
@@ -42,7 +42,7 @@ cmake_dependent_option(AIMRT_BUILD_ZENOH_PLUGIN "AimRT build zenoh plugin." OFF 
 cmake_dependent_option(AIMRT_BUILD_ICEORYX_PLUGIN "AimRT build iceoryx plugin." OFF "AIMRT_BUILD_RUNTIME" OFF)
 cmake_dependent_option(AIMRT_BUILD_OPENTELEMETRY_PLUGIN "AimRT build opentelemetry plugin." OFF "AIMRT_BUILD_RUNTIME" OFF)
 cmake_dependent_option(AIMRT_BUILD_ECHO_PLUGIN "AimRT build echo plugin." OFF "AIMRT_BUILD_RUNTIME" OFF)
-cmake_dependent_option(AIMRT_BUILD_ROS2_PLUGIN "AimRT build ros2 plugin." OFF "AIMRT_BUILD_RUNTIME;AIMRT_BUILD_WITH_ROS2" OFF)
+cmake_dependent_option(AIMRT_BUILD_ROS2_PLUGIN "AimRT build ros2 plugin." ON "AIMRT_BUILD_RUNTIME;AIMRT_BUILD_WITH_ROS2" ON)
 cmake_dependent_option(AIMRT_BUILD_RECORD_PLAYBACK_PLUGIN "AimRT build record playback plugin." OFF "AIMRT_BUILD_RUNTIME;AIMRT_BUILD_WITH_PROTOBUF" OFF)
 cmake_dependent_option(AIMRT_BUILD_TIME_MANIPULATOR_PLUGIN "AimRT build time manipulator plugin." OFF "AIMRT_BUILD_RUNTIME;AIMRT_BUILD_WITH_PROTOBUF" OFF)
 cmake_dependent_option(AIMRT_BUILD_PARAMETER_PLUGIN "AimRT build parameter plugin." OFF "AIMRT_BUILD_RUNTIME;AIMRT_BUILD_WITH_PROTOBUF" OFF)
@@ -50,6 +50,7 @@ cmake_dependent_option(AIMRT_BUILD_LOG_CONTROL_PLUGIN "AimRT build log control p
 cmake_dependent_option(AIMRT_BUILD_TOPIC_LOGGER_PLUGIN "AimRT build topic logger plugin." OFF "AIMRT_BUILD_RUNTIME;AIMRT_BUILD_WITH_PROTOBUF" OFF)
 cmake_dependent_option(AIMRT_BUILD_GRPC_PLUGIN "AimRT build grpc plugin." OFF "AIMRT_BUILD_RUNTIME" OFF)
 cmake_dependent_option(AIMRT_BUILD_PROXY_PLUGIN "AimRT build proxy plugin." OFF "AIMRT_BUILD_RUNTIME" OFF)
+cmake_dependent_option(AIMRT_BUILD_ECAL_PLUGIN "AimRt build ecal plugin." ON "AIMRT_BUILD_RUNTIME" ON)
 
 option(AIMRT_EXECUTOR_USE_STDEXEC "AimRT use stdexec as executor impl. (Experimental)" OFF)
 option(AIMRT_BUILD_WITH_WERROR "AimRT build with -Werror option. (Experimental)" OFF)
@@ -193,6 +194,10 @@ if(AIMRT_BUILD_WITH_ROS2)
   include(GetYamlCpp)
   find_package(rclcpp REQUIRED)
   find_package(Python3 REQUIRED)
+endif()
+
+if(AIMRT_BUILD_ECAL_PLUGIN)
+  find_package(eCAL REQUIRED)
 endif()
 
 if(AIMRT_BUILD_RUNTIME)

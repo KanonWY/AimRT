@@ -22,6 +22,11 @@ typedef struct {
   aimrt_string_view_t (*type_name)(void* impl);
 
   /**
+   * @brief Get protobuf description info
+   */
+  aimrt_string_view_t (*description)(void* impl);
+
+  /**
    * @brief Function to create msg
    * @note
    * Input 1: Implement pointer

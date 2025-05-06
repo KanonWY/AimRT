@@ -35,6 +35,11 @@ class TypeSupportRef {
     return ToStdStringView(base_ptr_->type_name(base_ptr_->impl));
   }
 
+
+  std::string_view Description() const {
+    return ToStdStringView(base_ptr_->description(base_ptr_->impl));
+  }
+
   void* Create() const {
     return base_ptr_->create(base_ptr_->impl);
   }
