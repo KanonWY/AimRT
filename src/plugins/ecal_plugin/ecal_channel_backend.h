@@ -19,7 +19,7 @@ class EcalChannelBackend : public runtime::core::channel::ChannelBackendBase {
 
   class CPayload : public eCAL::CPayloadWriter {
    public:
-    CPayload(const google::protobuf::Message& message_) : message(message_) {};
+    CPayload(const google::protobuf::Message& message_) : message(message_){};
 
     ~CPayload() override = default;
 
